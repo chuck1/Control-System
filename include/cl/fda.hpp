@@ -16,7 +16,7 @@ void print(double const & a);
 quat diff(quat const & a, quat const & b);
 
 
-template<typename T> void low_pass(Array<T> x, Array<T> y, int ti, double dt, double tc) {
+template<typename T> void low_pass(array<T> x, array<T> y, int ti, double dt, double tc) {
 	if(ti > 3) {
 		//v[ti] = v[ti-2] * 0.25 + v[ti-1] * 0.5 + v[ti] * 0.25;
 		
@@ -27,7 +27,7 @@ template<typename T> void low_pass(Array<T> x, Array<T> y, int ti, double dt, do
 }
 
 
-template<typename T> void forward(Array<T> v, Array<T> vd, double h, int i) {
+template<typename T> void forward(array<T> v, array<T> vd, double h, int i) {
 	// instead of checking to see if previous steps are available, time series data will be back-filled on initialization
 
 	vd[i] = ((v[i] - v[i-1]) / h + vd[i-1]) / 2.0;
@@ -51,6 +51,6 @@ template<typename T> void forward(Array<T> v, Array<T> vd, double h, int i) {
 
 
 
-void forward_quavec(Array<quat> v, Array<vec3> vd, double h, int i);
+void forward_quavec(array<quat> v, array<vec3> vd, double h, int i);
 
 #endif

@@ -1,7 +1,8 @@
 
-#include <quadrotor/plant.h>
-#include <quadrotor/quadrotor.h>
-#include <quadrotor/ControlLaw/ControlLaw.h>
+
+#include <cl/plant.hpp>
+#include <cl/quadrotor.hpp>
+#include <cl/ControlLaw.hpp>
 
 
 
@@ -16,9 +17,9 @@ void	CL::Thrust::Step(int i, double h) {
 void	CL::Alpha::Step(int i, double h) {
 	//printf("%s\n",__PRETTY_FUNCTION__);
 
-	math::vec3 torque = r_->angular_accel_to_torque(i, alpha_[i]);
+	vec3 torque = r_->angular_accel_to_torque(i, alpha_[i]);
 	
-	math::vec4 temp(torque);
+	vec4 temp(torque,0);
 
 	r_->plant_->gamma1_[i] = r_->A4inv_ * temp;
 /*
@@ -46,7 +47,7 @@ void	CL::Alpha::write(int n) {
 void	CL::Thrust::alloc(int n) {	
 	thrust_.alloc(n);
 
-	double t = r_->m_ * -r_->gravity_.z();
+	double t = r_->m_ * -r_->gravity_.z;
 	thrust_[-1] = t;
 	thrust_[-2] = t;
 }

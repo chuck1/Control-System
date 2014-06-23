@@ -18,7 +18,7 @@ bool		less(vec3 a, vec3 b) {
 Jounce::Base::Base(Quadrotor* r): CL::Base(r), CL::Thrust(r), CL::Alpha(r) {}
 
 
-void	Jounce::Base::Step(int i, double h) {
+void			Jounce::Base::step(int i, double h) {
 	vec3 tmp = r_->q(i) * (jounce_[i] * (float)r_->m_);
 
 	vec3& o = r_->omega(i);
@@ -45,8 +45,8 @@ void	Jounce::Base::Step(int i, double h) {
 	
 	//alpha_[i].print();
 
-	CL::Thrust::Step(i,h);
-	CL::Alpha::Step(i,h);
+	CL::Thrust::step(i,h);
+	CL::Alpha::step(i,h);
 	
 	/*
 	if(!o.isSane()) {
@@ -77,7 +77,7 @@ Jounce::X::X(Quadrotor* r): CL::Base(r), CL::X<5>(r), CL::Thrust(r), CL::Alpha(r
 	alloc(r->N_);
 
 }
-bool	Jounce::X::Check(int i, vec3 tol) {
+bool	Jounce::X::check(int i, vec3 tol) {
 	//printf("%s\n",__PRETTY_FUNCTION__);
 
 	//Command::X* command = (Command::X*)command_;
@@ -96,8 +96,7 @@ bool	Jounce::X::Check(int i, vec3 tol) {
 	}
 	return false;
 }
-
-void	Jounce::X::Step(int i, double h) {
+void	Jounce::X::step(int i, double h) {
 	//printf("%s\n",__PRETTY_FUNCTION__);
 	//printf("%f\n",h);
 

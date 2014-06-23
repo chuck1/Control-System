@@ -1,8 +1,8 @@
 
-#include <quadrotor/fda.h>
-#include <quadrotor/ControlLaw/ControlLaw.h>
-#include <quadrotor/ControlLaw/Alpha.h>
-#include <quadrotor/ControlLaw/Jerk.h>
+#include <cl/fda.hpp>
+#include <cl/ControlLaw.hpp>
+#include <cl/Alpha.hpp>
+#include <cl/Jerk.hpp>
 
 Jerk::Base::Base(Quadrotor* r): CL::Base(r), CL::Thrust(r), CL::Alpha(r), Alpha1::Base(r), Alpha1::Omega(r)/*, Alpha::Base(r)*/ {}
 //: Alpha::Omega(r), CL::Thrust(r) {}

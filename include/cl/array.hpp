@@ -17,9 +17,9 @@ void read(FILE* file, quat & v);
 void read(FILE* file, double & f);
 
 
-template <typename T> class Array {
+template <typename T> class array {
 	public:
-		Array() {
+		array() {
 			n_ = 0;
 			v_ = NULL;
 		}

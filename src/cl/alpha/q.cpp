@@ -1,25 +1,13 @@
 
-#include <quadrotor/command.h>
-#include <quadrotor/fda.h>
-#include <quadrotor/Input.hpp>
-#include <quadrotor/ControlLaw/Alpha.h>
+#include <cl/typedef.hpp>
+#include <cl/command.hpp>
+#include <cl/fda.hpp>
+#include <cl/Input/Input.hpp>
+#include <cl/Alpha.hpp>
 
-Alpha1::Base::Base(Quadrotor* r): CL::Base(r), CL::Alpha(r) {
-	alloc(r_->N_);
-}
-void	Alpha1::Base::alloc(int n) {
-	printf("%s\n",__PRETTY_FUNCTION__);
-	CL::Alpha::alloc(n);
-}
-void	Alpha1::Base::write(int n) {
-	printf("%s\n",__PRETTY_FUNCTION__);
-	CL::Alpha::write(n);
-}
-void	Alpha1::Base::Step(int i, double h) {
-	CL::Alpha::Step(i,h);
-}
 
-void	Alpha1::Q::Step(int i, double h) {
+
+void			Alpha1::Q::step(int i, double h) {
 	
 	Command::Q* q = dynamic_cast<Command::Q*>(command_);
 
@@ -39,14 +27,14 @@ void	Alpha1::Q::Step(int i, double h) {
 	forward(q_ref__[0], q_ref__[1], h, i);
 
 	// error
-
-	e_[1][i] = (q_ref_[i] * r_->q(i).getConjugate()).getImaginaryPart();
-
+	
+	e_[1][i] = glm::axis(q_ref_[i] * glm::conjugate(r_->q(i)));
+	
 	e_[2][i] = q_ref__[0][i] - r_->omega(i);
 	
 	e_[0][i] = e_[0][i-1] + e_[1][i] * h;
-
-
+	
+	
 	// control
 
 	alpha_[i] = 
@@ -136,27 +124,7 @@ bool	Alpha1::Q::Check(int i, math::vec3 tol) {
 }
 
 
-void	Alpha1::Omega::Step(int i, double h) {
 
-	alpha_[i] = 
-		c_[0] * e_[0][i] +
-		c_[1] * e_[1][i] +
-		omega_ref_[1][i];
-
-}
-bool	Alpha1::Omega::Check(int, math::vec3) {
-	return false;
-}
-void	Alpha1::Omega::alloc(int n) {
-	printf("%s\n",__PRETTY_FUNCTION__);
-	Alpha1::Base::alloc(n);
-	CL::Omega<2>::alloc(n);
-}
-void	Alpha1::Omega::write(int n) {
-	printf("%s\n",__PRETTY_FUNCTION__);
-	Alpha1::Base::write(n);
-	CL::Omega<2>::write(n);
-}
 
 
 

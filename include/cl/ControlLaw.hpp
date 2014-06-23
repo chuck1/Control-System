@@ -26,11 +26,11 @@ namespace CL {
 
 			//virtual void	SetCommand(int, Command::Base*) = 0;
 
-			virtual void	Step(int, double) = 0;
-			virtual bool	Check(int, vec3) = 0;
+			virtual void	step(int, double) = 0;
+			virtual bool	check(int, vec3) = 0;
 			virtual void	alloc(int) = 0;
 			virtual void	write(int) = 0;
-			virtual void	Init(int) {}
+			virtual void	init(int) {}
 		public:
 			Quadrotor*	r_;
 
@@ -103,7 +103,7 @@ namespace CL {
 			}
 
 			mat3		c_[N];
-			Array<vec3>	e_[N];
+			array<vec3>	e_[N];
 			double			p_[N];
 	};
 	template <int N> class X: virtual public Base, public Terms<N> {
@@ -147,7 +147,7 @@ namespace CL {
 				x_ref_[0][i-3] = x->in_->f(r_->t(i-3));
 			}
 		public:
-			Array<vec3>	x_ref_[N];
+			array<vec3>	x_ref_[N];
 	};
 	template <int N> class V: virtual public Base, public Terms<N> {
 		public:
@@ -179,7 +179,7 @@ namespace CL {
 
 			}
 		public:
-			Array<vec3>	v_ref_[N];
+			array<vec3>	v_ref_[N];
 	};
 	template <int N> class Q: virtual public Base, public Terms<N+1> {
 		public:
@@ -212,8 +212,8 @@ namespace CL {
 				Terms<N+1>::alloc(n);
 			}
 		public:
-			Array<quat>	q_ref_;
-			Array<vec3>	q_ref__[N];
+			array<quat>	q_ref_;
+			array<vec3>	q_ref__[N];
 	};
 	template <int N> class Omega: virtual public Base, public Terms<N> {
 		public:
@@ -245,7 +245,7 @@ namespace CL {
 			}
 			//void		set_ref(int i, vec3 omega) { omega_ref_[i] = omega; }
 		public:
-			Array<vec3>	omega_ref_[2];
+			array<vec3>	omega_ref_[2];
 	};
 
 
@@ -253,22 +253,22 @@ namespace CL {
 		public:
 			Thrust(Quadrotor* r): CL::Base(r) {}
 
-			virtual void		Step(int, double);
+			virtual void		step(int, double);
 			virtual void		alloc(int);
 			virtual void		write(int);
 		public:
-			Array<double>		thrust_;
+			array<double>		thrust_;
 	};
 	class Alpha: virtual public CL::Base {
 		public:
 			Alpha(Quadrotor* r): CL::Base(r) {}
 
-			virtual void		Step(int, double);
+			virtual void		step(int, double);
 			virtual void		alloc(int);
 			virtual void		write(int);
 		public:
 
-			Array<vec3>	alpha_;
+			array<vec3>		alpha_;
 	};
 }
 
