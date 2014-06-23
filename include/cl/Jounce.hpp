@@ -11,17 +11,17 @@ namespace Jounce {
 
 			virtual void	Step(int, double) = 0;
 			//virtual bool	Check(int, math::quat) {}
-			virtual bool	Check(int, math::vec3) = 0;
+			virtual bool	Check(int, vec3) = 0;
 			virtual void	alloc(int);
 			virtual void	write(int);
 		public:
-			Array<math::vec3>	jounce_;
+			Array<vec3>	jounce_;
 	};
 	class X: virtual public CL::X<5>, virtual public Base {
 		public:
 			X(Quadrotor*);
 			
-			bool		Check(int, math::vec3);
+			bool		Check(int, vec3);
 			virtual void	Step(int, double);
 			virtual void	alloc(int);
 			virtual void	write(int);
@@ -31,13 +31,13 @@ namespace Jounce {
 			V(Quadrotor* r);
 
 			virtual void	Step(int, double);
-			virtual bool	Check(int, math::vec3);
+			virtual bool	Check(int, vec3);
 			virtual void	alloc(int);
 			virtual void	write(int);
 		public:
 			//math::mat33		C_[4];
 
-			//Array<math::vec3>	e_[4];		
+			//Array<vec3>	e_[4];		
 	};
 }
 

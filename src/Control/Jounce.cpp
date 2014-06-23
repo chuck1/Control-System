@@ -7,16 +7,24 @@
 #include <cl/ControlLaw.hpp>
 #include <cl/Jounce.hpp>
 
+bool		less(vec3 a, vec3 b) {
+	a = glm::abs(a);
+	if(a.x > b.x) return false;
+	if(a.y > b.y) return false;
+	if(a.z > b.z) return false;
+	return true;
+}
+
 Jounce::Base::Base(Quadrotor* r): CL::Base(r), CL::Thrust(r), CL::Alpha(r) {}
 
 
 void	Jounce::Base::Step(int i, double h) {
-	math::vec3 tmp = r_->q(i).rotate(jounce_[i] * r_->m_);
+	vec3 tmp = r_->q(i) * (jounce_[i] * (float)r_->m_);
 
-	math::vec3& o = r_->omega(i);
+	vec3& o = r_->omega(i);
 
 	// thrust
-	thrust_[i] = (tmp.z() - (thrust_[i-2] - 2.0 * thrust_[i-1]) / h / h) / (1.0 / h / h - o.x() * o.x() - o.y() * o.y());
+	thrust_[i] = (tmp.z - (thrust_[i-2] - 2.0 * thrust_[i-1]) / h / h) / (1.0 / h / h - o.x * o.x - o.y * o.y);
 
 	double thrust_d = (thrust_[i] - thrust_[i-1]) / h;
 
@@ -31,11 +39,11 @@ void	Jounce::Base::Step(int i, double h) {
 
 	// angular acceleration
 	if(thrust_[i] != 0) {
-		alpha_[i].y() = (thrust_[i] * o.x() * o.z() - 2.0 * thrust_d * o.y() - tmp.x()) / thrust_[i];
-		alpha_[i].x() = -(thrust_[i] * o.y() * o.z() + 2.0 * thrust_d * o.x() - tmp.y()) / thrust_[i];
+		alpha_[i].y = (thrust_[i] * o.x * o.z - 2.0 * thrust_d * o.y - tmp.x) / thrust_[i];
+		alpha_[i].x = -(thrust_[i] * o.y * o.z + 2.0 * thrust_d * o.x - tmp.y) / thrust_[i];
 	}
 	
-	alpha_[i].print();
+	//alpha_[i].print();
 
 	CL::Thrust::Step(i,h);
 	CL::Alpha::Step(i,h);
@@ -69,16 +77,16 @@ Jounce::X::X(Quadrotor* r): CL::Base(r), CL::X<5>(r), CL::Thrust(r), CL::Alpha(r
 	alloc(r->N_);
 
 }
-bool	Jounce::X::Check(int i, math::vec3 tol) {
+bool	Jounce::X::Check(int i, vec3 tol) {
 	//printf("%s\n",__PRETTY_FUNCTION__);
 
 	//Command::X* command = (Command::X*)command_;
 
-	if(e_[1][i].Abs() < tol) {
-		if(e_[2][i].Abs() < tol) {
-			if(e_[3][i].Abs() < tol) {
-				if(e_[4][i].Abs() < tol) {
-					if(jounce_[i-1].Abs() < tol) {
+	if(less(glm::abs(e_[1][i]), tol)) {
+		if(less(glm::abs(e_[2][i], tol)) {
+			if(less(glm::abs(e_[3][i]), tol)) {
+				if(less(glm::abs(e_[4][i]), tol)) {
+					if(less(glm::abs(jounce_[i-1]), tol)) {
 						//command->Settle(i, r_->t_[i]);
 						return true;
 					}
@@ -191,7 +199,7 @@ void	Jounce::V::Step(int i, double h) {
 
 	Jounce::Base::Step(i, h);
 }
-bool	Jounce::V::Check(int i, math::vec3 tol) {
+bool	Jounce::V::Check(int i, vec3 tol) {
 	//printf("%s\n",__PRETTY_FUNCTION__);
 
 	if(e_[1][i].Abs() < tol) {
