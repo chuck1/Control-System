@@ -2,7 +2,8 @@ cmake_minimum_required (VERSION 2.8.8)
 
 INCLUDE($ENV{HOME}/.config.cmake)
 
-INCLUDE_DIRECTORIES("../../glm")
+INCLUDE_DIRECTORIES("../glm")
+INCLUDE_DIRECTORIES("../Galaxy-Standard/include")
 
 FIND_PACKAGE(CMakeHelper)
 

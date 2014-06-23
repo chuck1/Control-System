@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <cstdio>
 
-#include <cl/typedef.hpp>
+#include <cs/typedef.hpp>
 
 void write(FILE* file, vec3 const & v);
 void write(FILE* file, vec4 const & v);
@@ -69,8 +69,13 @@ template <typename T> class array {
 			}
 		}
 	public:
-		int	n_;
-		T*	v_;
+		/** @brief step
+		 *
+		 * current step (starts at zero)
+		 */
+		int		frame_;
+		int		n_;
+		T*		v_;
 };
 
 
